@@ -1,16 +1,21 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, Generated } from 'typeorm';
+import { User } from '../user/user.entity';
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, Generated, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 export class Task {
     @PrimaryGeneratedColumn()
     id: number
     
-    @Column()
+    @Column({ nullable: false })
     name: string;
     
-    @Column()
-    userId: number;
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'userId' })
+    user: User;
 
-    @Column()
-    priority: number;
+    @Column({ nullable: false })
+    userId: string;
+
+    @Column({ nullable: false })
+    priority: string;
 }

@@ -1,3 +1,9 @@
+# Partipant
+Elwin Bassaget
+
+# A noter
+Sur ma machine j'ai du changer la commande de script pour lancer avec postgres à la fois le start et les test, si besoin il suffit de just de revenir à l'autre
+
 # Évaluation finale
 Pour ce test final vous allez être évalués sur votre maîtrise du framework NestJS. Ce projet, qui est une TodoList et qu'il vous faudra dupliquer (fork), contient un certain nombre de tests automatisés. Chacun d'entre eux couvre une fonctionnalité spécifique : création d'un utilisateur, création d'une tâche, vérification que le serveur renvoie une erreur dans tel ou tel cas etc.
 

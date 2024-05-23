@@ -1,11 +1,12 @@
-import { Entity, Column, PrimaryColumn, Generated } from 'typeorm';
+import { Entity, Column, PrimaryColumn, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity()
+@Unique(['email'])
 export class User {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
+  id: string = uuidv4();
+  
+  @Column({ nullable: false })
   email: string;
-
-  @Column()
-  @Generated('increment')
-  id: number;
 }

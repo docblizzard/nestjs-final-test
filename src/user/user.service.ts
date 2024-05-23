@@ -48,7 +48,7 @@ export class UserService {
 
     async resetData(): Promise<void> {
         try {
-            await this.userRepository.clear();
+            await this.userRepository.query('TRUNCATE TABLE "user" CASCADE');
           } catch (error) {
             throw new Error('Failed to reset data: ' + error.message);
           }
