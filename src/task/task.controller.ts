@@ -11,6 +11,11 @@ export class TaskController {
         return this.taskService.getUserTasks(userid)
     }
 
+    @Get('/:name')
+    getTasks(@Param('name') name: string) {
+        return this.taskService.getTaskByName(name)
+    }
+
     @Post()
     createTask(@Body() task: Task): Promise<Task> {
         return this.taskService.addTask(task.name, task.userId, task.priority);
@@ -20,4 +25,5 @@ export class TaskController {
     deleteTasks(){
         return this.taskService.resetData()
     }
+    
 }

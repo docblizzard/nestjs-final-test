@@ -37,20 +37,20 @@ export class UserService {
     async getUser(email: string): Promise<User> {
         const user = await this.userRepository.findOne({ where: { email } });
         if (user){
-            return user; 
+            return user;
         }
         else throw new NotFoundException(`User with email ${email} not found`);
     }
 
     async getAllUsers(): Promise<User[]> {
-        return this.userRepository.find(); 
+        return this.userRepository.find();
     }
 
     async resetData(): Promise<void> {
         try {
-            await this.userRepository.query('TRUNCATE TABLE "user" CASCADE');
-          } catch (error) {
+            await this.userRepository.query('TRUNCATE TABLE "user" CASCADE;');
+        } catch (error) {
             throw new Error('Failed to reset data: ' + error.message);
-          }
+        }
     }
 }
