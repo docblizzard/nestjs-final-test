@@ -1,5 +1,4 @@
-import { BadRequestException, Body, ConflictException, Injectable, NotFoundException, NotImplementedException, Res } from '@nestjs/common';
-// import { User } from './user.interface';
+import { BadRequestException, ConflictException, Injectable, NotFoundException, NotImplementedException, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -47,7 +46,7 @@ export class UserService {
     }
 
     async resetData(): Promise<void> {
-        const maxRetries = 30;
+        const maxRetries = 5;
         let count = 0;
         while (true) {
             try {

@@ -64,7 +64,7 @@ export class TaskService {
     }
 
     async resetData(): Promise<void>{
-        const maxRetries = 30;
+        const maxRetries = 5;
         let count = 0;
         const retryDelay = 1000;
         while (true) {
