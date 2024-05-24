@@ -25,7 +25,6 @@ export class ConfigurationService {
     private setupEnvironment(): void {
         const databasePort = this.getVariableFromEnvFile(DATABASE_PORT);
         const databaseName = this.getVariableFromEnvFile(DATABASE_NAME);
-
         this._databaseConfig = {
             DATABASE_NAME: databaseName,
             DATABASE_PORT: databasePort,

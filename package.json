@@ -18,9 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e:mongodb": "export DBMS=mongodb; docker-compose --env-file ./.env -f ./docker/docker-compose-mongodb.yml up -d; jest --config ./test/jest-e2e.json",
-    "test:e2e:postgres": "export DBMS=postgres; docker-compose --env-file ./.env -f ./docker/docker-compose-postgres.yml up -d; jest --config ./test/jest-e2e.json",
+    "test:e2e:postgres": "powershell -Command \"$env:DBMS='postgres'; docker-compose --env-file ./.env -f ./docker/docker-compose-postgres.yml up -d; jest --config ./test/jest-e2e.json --detectOpenHandles",
     "start:mongodb": "export DBMS=mongodb; docker-compose --env-file ./.env -f ./docker/docker-compose-mongodb.yml up -d; npm run start:dev",
-    "start:postgres": "export DBMS=postgres; docker-compose --env-file ./.env -f ./docker/docker-compose-postgres.yml up -d; npm run start:dev"
+    "start:postgres": "powershell -Command \"$env:DBMS='postgres'; docker-compose --env-file ./.env -f ./docker/docker-compose-postgres.yml up -d; npm run start:dev\""
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -30,7 +30,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.2",
     "mongoose": "^8.2.1",
-    "pg": "^8.11.3",
+    "pg": "^8.11.5",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.20"
