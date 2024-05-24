@@ -25,8 +25,8 @@ export class UserService {
             }
             else {
                 const user = new User();
-                user.email = email
-                return this.userRepository.save(user);
+                user.email = email;
+                return await this.userRepository.save(user);
             }
         }
         else {
@@ -43,14 +43,18 @@ export class UserService {
     }
 
     async getAllUsers(): Promise<User[]> {
-        return this.userRepository.find();
+        return await this.userRepository.find();
     }
 
     async resetData(): Promise<void> {
-        try {
-            await this.userRepository.query('TRUNCATE TABLE "user" CASCADE;');
-        } catch (error) {
-            throw new Error('Failed to reset data: ' + error.message);
+        const maxRetries = 30;
+        let count = 0;
+        while (true) {
+            try {
+                return await this.userRepository.query('TRUNCATE TABLE "user" CASCADE;');
+            } catch (error) {
+                if (++count === maxRetries) throw new Error('Failed to reset data: ' + error.message);
+            }
         }
     }
 }

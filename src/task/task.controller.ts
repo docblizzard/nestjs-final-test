@@ -7,23 +7,23 @@ export class TaskController {
     constructor(private readonly taskService: TaskService) {}
 
     @Get('/user/:userid')
-    getUserTasks(@Param('userid') userid: string){
-        return this.taskService.getUserTasks(userid)
+    async getUserTasks(@Param('userid') userid: string){
+        return await this.taskService.getUserTasks(userid)
     }
 
     @Get('/:name')
-    getTasks(@Param('name') name: string) {
-        return this.taskService.getTaskByName(name)
+    async getTasks(@Param('name') name: string) {
+        return await this.taskService.getTaskByName(name)
     }
 
     @Post()
-    createTask(@Body() task: Task): Promise<Task> {
-        return this.taskService.addTask(task.name, task.userId, task.priority);
+    async createTask(@Body() task: Task): Promise<Task> {
+        return await this.taskService.addTask(task.name, task.userId, task.priority);
     }
     //Don't push to prod
     @Delete('delete')
-    deleteTasks(){
-        return this.taskService.resetData()
+    async deleteTasks(){
+        return await this.taskService.resetData()
     }
     
 }

@@ -9,22 +9,22 @@ export class UserController {
     @Get()
     async getUser(@Body('email') email: string): Promise<User> {
       console.log(email)
-      return this.userService.getUser(email);
+      return await this.userService.getUser(email);
     }
 
     @Get('all')
     async getAllUsers(): Promise<User[]> {
-        return this.userService.getAllUsers();
+        return await this.userService.getAllUsers();
     }
     
     @HttpCode(201)
     @Post()
     async createUser(@Body('email') email: string): Promise<User> {
-      return this.userService.addUser(email);
+      return await this.userService.addUser(email);
     }
 
     @Delete('delete')
-    deleteUsers(){
-        return this.userService.resetData()
+    async deleteUsers(){
+        return await this.userService.resetData()
     }
 }

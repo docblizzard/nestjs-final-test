@@ -12,48 +12,31 @@ export class TaskService {
         @InjectRepository(Task)
         private readonly taskRepository: Repository<Task>
     ) {}
-    
-    checkUserUuid(uuid: string) {
-        
-    }
 
     uuidRegex(uuid: string) {
         const uuidRegex = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i;
         return uuidRegex.test(uuid);
     }
 
-    checkEmptyTaskInputandRegex(name: string, userId: string, priority: string ){
-        const priorityToNum = parseFloat(priority);
+    checkEmptyTaskInputandRegex(name: string, userId: string, priority: number ){
 
-        if (name.length === 0 || !(this.uuidRegex(userId)) || isNaN(priorityToNum) || priorityToNum <= 0 ){
+        if (name.length === 0 || !(this.uuidRegex(userId)) || isNaN(priority) || priority <= 0 ){
             return false;
         }
         else return true;
     }
 
-    async addTask(name: string, userId: string, priority: string | number): Promise<Task> {
-        //Check if userId for the task exists, avoids foreign key errors
-        // const foundUser = await this.userRepository.findOne({ where: { id: userId } });
-        const priorityConverted = priority.toString();
-        
-        // if (!foundUser){
-        //     throw new BadRequestException('UserId does not exist');
-        // }
-        if (!(this.checkEmptyTaskInputandRegex(name, userId, priorityConverted))) {
+    async addTask(name: string, userId: string, priority: number): Promise<Task> {
+        if (!(this.checkEmptyTaskInputandRegex(name, userId, priority))) {
             throw new BadRequestException('Missing/Incorrect inputs');
-        }
-
-        const foundUser = await this.userRepository.findOne({ where: { id: userId } });
-        if (!foundUser) {
-            throw new BadRequestException('UserId does not exist');
         }
 
         else {
             const task = new Task();
             task.name = name;
             task.userId = userId;
-            task.priority = priorityConverted;
-            return this.taskRepository.save(task);
+            task.priority = priority;
+            return await this.taskRepository.save(task);
         }
     }
 
@@ -69,19 +52,27 @@ export class TaskService {
         if (this.uuidRegex(userId)){
             const foundUser = await this.userRepository.findOne({ where: { id: userId } });
             if (foundUser) {
-                const foundTasks = await this.taskRepository.find({ where: { userId } })
+                const foundTasks = await this.taskRepository.find({ where: { userId } });
                 return foundTasks;
             }
-            else throw new NotFoundException('User not found');
+            else {
+                console.log(foundUser);
+                throw new NotFoundException('User not found');
+            }
         }
         else throw new BadRequestException('Incorrect userId input');
     }
 
-    async resetData(): Promise<void> {
-        try {
-            await this.taskRepository.clear();
-        } catch (error) {
-            throw new Error('Failed to reset data: ' + error.message);
+    async resetData(): Promise<void>{
+        const maxRetries = 30;
+        let count = 0;
+        const retryDelay = 1000;
+        while (true) {
+            try {
+                return await this.taskRepository.query('TRUNCATE TABLE "task" CASCADE;');
+            } catch (error) {
+                if (++count === maxRetries) throw new Error('Failed to reset data: ' + error.message);
+            }
         }
     }
 }

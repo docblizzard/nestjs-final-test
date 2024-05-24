@@ -6,16 +6,16 @@ export class Task {
     @PrimaryGeneratedColumn()
     id: number
     
-    @Column({ nullable: false })
+    @Column()
     name: string;
     
     @ManyToOne(() => User)
     @JoinColumn({ name: 'userId' })
     user: User;
 
-    @Column({ nullable: false })
+    @Column()
     userId: string;
 
-    @Column({ nullable: false })
-    priority: string;
+    @Column()
+    priority: number;
 }
